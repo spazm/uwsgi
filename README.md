@@ -18,9 +18,9 @@ support for uWSGI.
 
 This cookbook includes LWRPs for create new uWSGI sites.
 
-## `uwsgi_site`
+## `uwsgi_app`
 
-Cretaes, configures, or removes a new uWSGI site.
+Enables, starts, stops, restarts, or disables a uWSGI app.
 
 ### Actions
 
@@ -33,7 +33,22 @@ Cretaes, configures, or removes a new uWSGI site.
 
 ### Attribute Parameters
 
+- `app_name`: The name of the app.
+- `port`: The port number that uWSGI should listen on.
+- `attributes`: Additional attributes to set in the configuration.
+
 ### Examples
+
+    ```ruby
+    uwsgi_app "simple-site" do
+      port 5330
+      attributes {
+        'master' => true,
+        'workers' => 8,
+        'pythonpath' => '/srv/path'
+      }
+    end
+    ```
     
 # Usage
 

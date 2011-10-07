@@ -19,13 +19,22 @@
 #
 
 require_recipe "apt"
+require_recipe "python"
 
 apt_repository "uwsgi" do
-  uri         "http://ppa.launchpad.net/uwsgi/release/ubuntu"
+  uri         "http://ppa.launchpad.net/uwsgi/release/ubuntu #{node['lsb']['codename']}"
   components  ["main"]
   keyserver   "keyserver.ubuntu.com"
   key         "B33D8107"
   action      :add
 end
 
-package "uwsgi"
+if node['python']['version'] =~ /^3\./
+  package "uwsgi-python3"
+else
+  package "uwsgi-python"
+end
+
+service 'uwsgi-python' do
+  action :enable
+end

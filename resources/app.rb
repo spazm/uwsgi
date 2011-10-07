@@ -1,9 +1,8 @@
 #
-# Author:: Gabe McArthur (<gabe@enmasse.com>)
 # Cookbook Name:: uwsgi
-# Recipe:: python
+# Resource:: app
 #
-# Copyright 2011, En Masse Entertainment, Inc.
+# Copyright:: 2008-2011, Opscode, Inc <legal@opscode.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +17,13 @@
 # limitations under the License.
 #
 
-require_recipe "python"
+actions :enable, :disable, :stop, :start, :restart, :reload
 
-case node['python']['version']
-when /^2\.6/
-  package "uwsgi-python2.6"
-when /^2\.7/
-  package "uwsgi-python"
-when /^3\.1/
-  package "uwsgi-python3.1"
-when /^3/
-  package "uwsgi-python3"
+attribute :app_name,      :kind_of => String,   :name_attribute => true
+attribute :port,          :kind_of => Fixnum,   :required => true
+attribute :attributes,    :kind_of => Hash
+
+def initialize(*args)
+  super
+  @actions = [:enable]
 end
-

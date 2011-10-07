@@ -19,4 +19,3 @@
 #
 
 default['uwsgi']['install_method'] = 'package'
-
