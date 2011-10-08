@@ -19,3 +19,4 @@
 #
 
 default['uwsgi']['install_method'] = 'package'
+default['uwsgi']['user'] = 'www-data'

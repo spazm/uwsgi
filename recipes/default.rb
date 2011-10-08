@@ -22,11 +22,13 @@ require_recipe "apt"
 require_recipe "python"
 
 apt_repository "uwsgi" do
-  uri         "http://ppa.launchpad.net/uwsgi/release/ubuntu #{node['lsb']['codename']}"
-  components  ["main"]
-  keyserver   "keyserver.ubuntu.com"
-  key         "B33D8107"
-  action      :add
+  uri           "http://ppa.launchpad.net/uwsgi/release/ubuntu"
+  deb_src       "http://ppa.launchpad.net/uwsgi/release/ubuntu"
+  distribution  node['lsb']['codename']
+  components    ["main"]
+  keyserver     "keyserver.ubuntu.com"
+  key           "B33D8107"
+  action        :add
 end
 
 if node['python']['version'] =~ /^3\./
