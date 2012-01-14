@@ -18,25 +18,16 @@
 # limitations under the License.
 #
 
-require_recipe "apt"
 require_recipe "python"
 
-apt_repository "uwsgi" do
-  uri           "http://ppa.launchpad.net/uwsgi/release/ubuntu"
-  deb_src       "http://ppa.launchpad.net/uwsgi/release/ubuntu"
-  distribution  node['lsb']['codename']
-  components    ["main"]
-  keyserver     "keyserver.ubuntu.com"
-  key           "B33D8107"
-  action        :add
-end
+package "uwsgi"
 
 if node['python']['version'] =~ /^3\./
-  package "uwsgi-python3"
+  package "uwsgi-plugin-python3"
 else
-  package "uwsgi-python"
+  package "uwsgi-plugin-python"
 end
 
-service 'uwsgi-python' do
+service 'uwsgi' do
   action :enable
 end

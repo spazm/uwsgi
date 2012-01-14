@@ -24,7 +24,7 @@ action :enable do
     'uwsgi' => {
       'socket' => "127.0.0.1:#{new_resource.port}",
       'master' => new_resource.master,
-    }.merge(new_resource.attributes)    
+    }.merge(new_resource.attributes)
   }
 
   file available_conf do
@@ -51,25 +51,25 @@ action :disable do
 end
 
 action :start do
-  uwsgi_python "start"  
+  uwsgi "start"
 end
 
 action :stop do
-  uwsgi_python "stop"  
+  uwsgi "stop"
 end
 
 action :restart do
-  uwsgi_python "restart"
+  uwsgi "restart"
 end
 
 action :reload do
-  uwsgi_python "reload"
+  uwsgi "reload"
 end
 
 action :status do
   if enabled?
     begin
-      output = `/etc/init.d/uwsgi-python status #{new_resource.app_name}`
+      output = `/etc/init.d/uwsgi status #{new_resource.app_name}`
       Chef::Log.info output
     rescue
       Chef::Log.error output
@@ -79,20 +79,20 @@ end
 
 private
 def available_conf
-  @available_conf ||= "/etc/uwsgi-python/apps-available/#{new_resource.app_name}.yaml"
+  @available_conf ||= "/etc/uwsgi/apps-available/#{new_resource.app_name}.yaml"
 end
 
 def enabled_conf
-  @enabled_conf ||= "/etc/uwsgi-python/sites-enabled/#{new_resource.app_name}.yaml"
+  @enabled_conf ||= "/etc/uwsgi/sites-enabled/#{new_resource.app_name}.yaml"
 end
 
 def enabled?
   not ::File.exist?(enabled_conf)
 end
 
-def uwsgi_python(cmd)
+def uwsgi(cmd)
   if enabled?
-    system "/etc/init.d/uwsgi-python #{cmd} #{new_resource.app_name}"
+    system "/etc/init.d/uwsgi #{cmd} #{new_resource.app_name}"
     unless $?.success?
       Chef::Log.error "Unable to #{cmd} #{new_resource.app_name} uwsgi python app"
     end
